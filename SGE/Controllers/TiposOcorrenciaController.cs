@@ -103,6 +103,14 @@ namespace SGE.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (tipoOcorrencia.CadAtivo == false)
+                {
+                    tipoOcorrencia.CadInativo = DateTime.Now;
+                }
+                else
+                {
+                    tipoOcorrencia.CadInativo = null;
+                }
                 tipoOcorrencia.TipoOcorrenciaId = Guid.NewGuid();
                 _context.Add(tipoOcorrencia);
                 await _context.SaveChangesAsync();
@@ -158,6 +166,14 @@ namespace SGE.Controllers
             {
                 try
                 {
+                    if (tipoOcorrencia.CadAtivo == false)
+                    {
+                        tipoOcorrencia.CadInativo = DateTime.Now;
+                    }
+                    else
+                    {
+                        tipoOcorrencia.CadInativo = null;
+                    }
                     _context.Update(tipoOcorrencia);
                     await _context.SaveChangesAsync();
                 }
@@ -218,7 +234,11 @@ namespace SGE.Controllers
             var tipoOcorrencia = await _context.TiposOcorrencia.FindAsync(id);
             if (tipoOcorrencia != null)
             {
-                _context.TiposOcorrencia.Remove(tipoOcorrencia);
+                tipoOcorrencia.CadAtivo = false;
+                tipoOcorrencia.CadInativo = DateTime.Now;
+                _context.TiposOcorrencia.Update(tipoOcorrencia);
+                _context.SaveChanges();
+                //_context.TiposOcorrencia.Remove(tipoOcorrencia);
             }
 
             await _context.SaveChangesAsync();

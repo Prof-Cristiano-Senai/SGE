@@ -22,6 +22,6 @@ namespace SGE.Models
         public DateTime? CadInativo { get; set; }
         public Guid TipoUsuarioId { get; set; }
         public TipoUsuario? TipoUsuario { get; set; }
-        public string UrlFoto { get; set; }
+        public string? UrlFoto { get; set; }
     }
 }

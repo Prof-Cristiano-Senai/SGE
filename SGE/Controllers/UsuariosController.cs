@@ -143,6 +143,7 @@ namespace SGE.Controllers
             {
                 return NotFound();
             }
+
             ViewData["TipoUsuarioId"] = new SelectList(_context.TiposUsuario, "TipoUsuarioId", "TipoUsuarioId", usuario.TipoUsuarioId);
             return View(usuario);
         }
@@ -198,14 +199,33 @@ namespace SGE.Controllers
             }
 
 
-
             if (ModelState.IsValid)
             {
+                Aluno aluno = _context.Alunos.Where(a => a.Email == usuario.Email).FirstOrDefault();
+                if (usuario.CadAtivo == false)
+                {
+                    usuario.CadInativo = DateTime.Now;
+                    aluno.CadAtivo = false;
+                    aluno.CadInativo = DateTime.Now;
+                }
+                else
+                {
+                    aluno.CadAtivo = true;
+                    usuario.CadInativo = null;
+                    aluno.CadInativo = null;
+                }
                 try
                 {
-
                     usuario.TipoUsuario = _context.TiposUsuario.Where(a => a.TipoUsuarioId == usuario.TipoUsuarioId).FirstOrDefault();
+                    aluno.Senha = usuario.Senha;
+                    aluno.Celular = usuario.Celular;
+                    aluno.AlunoNome = usuario.UsuarioNome;
+                    aluno.Email = usuario.Email;
+                    aluno.TipoUsuarioId = usuario.TipoUsuarioId;
+                    aluno.TipoUsuario = usuario.TipoUsuario;
+
                     _context.Update(usuario);
+                    _context.Alunos.Update(aluno);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -271,11 +291,17 @@ namespace SGE.Controllers
                 return View(usuario);
             }
 
+            var aluno = _context.Alunos.Where(a => a.Email == usuario.Email).FirstOrDefault();
             if (usuario != null)
             {
-                _context.Usuarios.Remove(usuario);
+                aluno.CadAtivo = false;
+                aluno.CadInativo = DateTime.Now;
+                usuario.CadAtivo = false;
+                usuario.CadInativo = DateTime.Now;
+                _context.Alunos.Update(aluno);
+                _context.Update(aluno);
+                await _context.SaveChangesAsync();
             }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

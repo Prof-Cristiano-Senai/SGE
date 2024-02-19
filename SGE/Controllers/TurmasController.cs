@@ -101,6 +101,15 @@ namespace SGE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TurmaId,TurmaNome,Turno,Serie,CadAtivo,CadInativo")] Turma turma)
         {
+            if (turma.CadAtivo == false)
+            {
+                turma.CadInativo = DateTime.Now;
+            }
+            else
+            {
+                turma.CadInativo = null;
+            }
+
             if (ModelState.IsValid)
             {
                 turma.TurmaId = Guid.NewGuid();
@@ -152,6 +161,15 @@ namespace SGE.Controllers
             if (id != turma.TurmaId)
             {
                 return NotFound();
+            }
+
+            if (turma.CadAtivo == false)
+            {
+                turma.CadInativo = DateTime.Now;
+            }
+            else
+            {
+                turma.CadInativo = null;
             }
 
             if (ModelState.IsValid)
@@ -218,7 +236,11 @@ namespace SGE.Controllers
             var turma = await _context.Turmas.FindAsync(id);
             if (turma != null)
             {
-                _context.Turmas.Remove(turma);
+                turma.CadInativo = DateTime.Now;
+                turma.CadAtivo = false;
+                _context.Update(turma);
+                _context.SaveChanges();
+                //_context.Turmas.Remove(turma);
             }
 
             await _context.SaveChangesAsync();

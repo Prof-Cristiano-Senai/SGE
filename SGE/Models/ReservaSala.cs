@@ -7,9 +7,10 @@
         public Sala? Sala { get; set; }
         public Guid UsuarioId { get; set; }
         public Usuario? Usuario { get; set; }
-        public DateTime DataReserva { get; set; }
-        public DateTime HoraInicio { get; set; }
-        public DateTime HoraFim { get; set; }
+        public DateOnly DataReserva { get; set; }
+        public DateOnly DataFimReserva { get; set; }
+        public TimeOnly HoraInicio { get; set; }
+        public TimeOnly HoraFim { get; set; }
         public bool CadAtivo { get; set; }
         public DateTime? CadInativo { get; set; }
     }

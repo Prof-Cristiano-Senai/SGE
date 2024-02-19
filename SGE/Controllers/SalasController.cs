@@ -91,6 +91,7 @@ namespace SGE.Controllers
                 }
             }
 
+
             return View();
         }
 
@@ -103,6 +104,14 @@ namespace SGE.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (sala.CadAtivo == false)
+                {
+                    sala.CadInativo = DateTime.Now;
+                }
+                else
+                {
+                    sala.CadInativo = null;
+                }
                 sala.SalaId = Guid.NewGuid();
                 _context.Add(sala);
                 await _context.SaveChangesAsync();
@@ -152,6 +161,14 @@ namespace SGE.Controllers
             if (id != sala.SalaId)
             {
                 return NotFound();
+            }
+            if (sala.CadAtivo == false)
+            {
+                sala.CadInativo = DateTime.Now;
+            }
+            else
+            {
+                sala.CadInativo = null;
             }
 
             if (ModelState.IsValid)
@@ -218,7 +235,12 @@ namespace SGE.Controllers
             var sala = await _context.Salas.FindAsync(id);
             if (sala != null)
             {
-                _context.Salas.Remove(sala);
+
+                sala.CadInativo = DateTime.Now;
+                sala.CadAtivo = false;
+                _context.Update(sala);
+                await _context.SaveChangesAsync();
+                //_context.Salas.Remove(sala);
             }
 
             await _context.SaveChangesAsync();

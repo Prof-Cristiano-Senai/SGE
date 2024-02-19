@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SGE.Data;
 
@@ -11,9 +12,11 @@ using SGE.Data;
 namespace SGE.Migrations
 {
     [DbContext(typeof(SGEContext))]
-    partial class SGEContextModelSnapshot : ModelSnapshot
+    [Migration("20240219115104_img")]
+    partial class img
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,17 +169,14 @@ namespace SGE.Migrations
                     b.Property<DateTime?>("CadInativo")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("DataFimReserva")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DataReserva")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("DataReserva")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("HoraFim")
+                        .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("HoraFim")
-                        .HasColumnType("time");
-
-                    b.Property<TimeOnly>("HoraInicio")
-                        .HasColumnType("time");
+                    b.Property<DateTime>("HoraInicio")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("SalaId")
                         .HasColumnType("uniqueidentifier");
