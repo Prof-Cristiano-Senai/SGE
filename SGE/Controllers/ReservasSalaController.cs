@@ -22,6 +22,21 @@ namespace SGE.Controllers
         // GET: ReservasSala
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             var sGEContext = _context.ReservasSala.Include(r => r.Sala).Include(r => r.Usuario);
             return View(await sGEContext.ToListAsync());
         }
@@ -29,6 +44,21 @@ namespace SGE.Controllers
         // GET: ReservasSala/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -49,6 +79,21 @@ namespace SGE.Controllers
         // GET: ReservasSala/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             ViewData["SalaId"] = new SelectList(_context.Salas, "SalaId", "SalaId");
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "UsuarioId");
             return View();
@@ -76,6 +121,21 @@ namespace SGE.Controllers
         // GET: ReservasSala/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -131,6 +191,21 @@ namespace SGE.Controllers
         // GET: ReservasSala/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();

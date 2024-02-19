@@ -8,6 +8,17 @@
 
 <h4>Usuario</h4>
 <hr />
+@if (ViewData["Erro"] != null)
+{
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-4 text-center">
+            <div class="alert alert-danger">
+                <strong> @ViewData["Erro"] </strong>
+
+            </div>
+        </div>
+    </div>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -65,5 +76,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

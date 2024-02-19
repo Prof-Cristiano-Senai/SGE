@@ -2,6 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    if (Context.Session.GetString("email") != null)
+    {
+        var sessionEmail = Context.Session.GetString("email");
+        var sessionNome = Context.Session.GetString("usuario");
+        var sessionTipoUsuarioId = Context.Session.GetString("tipo");
+    }
+
+
 }
 
 <h1>Index</h1>
@@ -64,62 +72,63 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Matricula)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AlunoNome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Celular)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Logradouro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Numero)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cidade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CEP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Senha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataNascimento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CadAtivo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataCadastro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CadInativo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoUsuario.TipoUsuarioId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UrlFoto)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AlunoId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AlunoId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AlunoId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Matricula)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlunoNome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Celular)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Logradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cidade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CEP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Senha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CadAtivo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataCadastro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CadInativo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoUsuario.TipoUsuarioId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UrlFoto)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AlunoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AlunoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AlunoId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

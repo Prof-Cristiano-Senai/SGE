@@ -10,11 +10,11 @@ using SGE.Models;
 
 namespace SGE.Controllers
 {
-    public class OcorreniasController : Controller
+    public class OcorrenciasController : Controller
     {
         private readonly SGEContext _context;
 
-        public OcorreniasController(SGEContext context)
+        public OcorrenciasController(SGEContext context)
         {
             _context = context;
         }
@@ -22,6 +22,20 @@ namespace SGE.Controllers
         // GET: Ocorrenias
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
             var sGEContext = _context.Ocorrencias.Include(o => o.TipoOcorrencia).Include(o => o.Usuario);
             return View(await sGEContext.ToListAsync());
         }
@@ -29,6 +43,21 @@ namespace SGE.Controllers
         // GET: Ocorrenias/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -49,6 +78,21 @@ namespace SGE.Controllers
         // GET: Ocorrenias/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             ViewData["TipoOcorrenciaId"] = new SelectList(_context.TiposOcorrencia, "TipoOcorrenciaId", "TipoOcorrenciaId");
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", "UsuarioId");
             return View();
@@ -76,6 +120,21 @@ namespace SGE.Controllers
         // GET: Ocorrenias/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -131,6 +190,21 @@ namespace SGE.Controllers
         // GET: Ocorrenias/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();

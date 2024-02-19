@@ -22,12 +22,42 @@ namespace SGE.Controllers
         // GET: TiposUsuario
         public async Task<IActionResult> Index()
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             return View(await _context.TiposUsuario.ToListAsync());
         }
 
         // GET: TiposUsuario/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +76,21 @@ namespace SGE.Controllers
         // GET: TiposUsuario/Create
         public IActionResult Create()
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             return View();
         }
 
@@ -69,6 +114,21 @@ namespace SGE.Controllers
         // GET: TiposUsuario/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -96,6 +156,13 @@ namespace SGE.Controllers
 
             if (ModelState.IsValid)
             {
+                TipoUsuario tipoUsuarioAntigo = _context.TiposUsuario.Where(a => a.TipoUsuarioId == tipoUsuario.TipoUsuarioId).FirstOrDefault();
+                if (tipoUsuarioAntigo.Tipo == "Administrador" || tipoUsuarioAntigo.Tipo == "Aluno")
+                {
+                    ViewData["Erro"] = "Os tipos de usuários ADMINISTRADOR e ALUNO não podem ser alterados!";
+                    return View(tipoUsuario);
+                }
+
                 try
                 {
                     _context.Update(tipoUsuario);
@@ -120,6 +187,21 @@ namespace SGE.Controllers
         // GET: TiposUsuario/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -140,7 +222,12 @@ namespace SGE.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var tipoUsuario = await _context.TiposUsuario.FindAsync(id);
+            TipoUsuario tipoUsuario = _context.TiposUsuario.Where(a => a.TipoUsuarioId == id).FirstOrDefault();
+            if (tipoUsuario.Tipo == "Administrador" || tipoUsuario.Tipo == "Aluno")
+            {
+                ViewData["Erro"] = "Os tipos de usuários ADMINISTRADOR e ALUNO não podem ser Excluídos!";
+                return View(tipoUsuario);
+            }
             if (tipoUsuario != null)
             {
                 _context.TiposUsuario.Remove(tipoUsuario);

@@ -1,5 +1,10 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    var sessionEmail = Context.Session.GetString("email");
+    var sessionNome = Context.Session.GetString("nome");
+    var sessionTipoUsuarioId = Context.Session.GetString("tipo");
+
 }
 
 <div class="text-center">
