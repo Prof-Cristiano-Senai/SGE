@@ -238,5 +238,130 @@ namespace SGE.Controllers
         {
             return _context.AlunosTurma.Any(e => e.AlunoTurmaId == id);
         }
+
+        public async Task<IActionResult> ListaAlunos()
+        {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+            List<Aluno> alunos = _context.Alunos.Where(a => a.CadAtivo == true).ToList();
+            List<Turma> turmas = _context.Turmas.Where(a => a.CadAtivo == true).ToList();
+            List<AlunoTurma> alunoTurmas = _context.AlunosTurma.ToList();
+            ViewData["Alunos"] = alunos.ToList();
+            ViewData["Turmas"] = turmas.ToList();
+            return View(alunoTurmas);
+        }
+
+        public async Task<IActionResult> SelecionaTurma(Guid id)
+        {
+            if (HttpContext.Session.GetString("email") == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                string Email = HttpContext.Session.GetString("email");
+                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
+                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
+                if (usuario.TipoUsuarioId == idTipoAluno)
+                {
+                    return RedirectToAction("AcessoNegado", "Home");
+                }
+            }
+            List<Aluno> alunos = _context.Alunos.Where(a => a.CadAtivo == true).ToList();
+            List<Turma> turmas = _context.Turmas.Where(a => a.CadAtivo == true).ToList();
+            List<AlunoTurma> alunoTurmas = _context.AlunosTurma.Where(a => a.TurmaId != id).ToList();
+            alunos = alunos.Where(a => !alunoTurmas.Any(at => at.AlunoId == a.AlunoId)).ToList();
+
+            ViewData["Turmas"] = turmas;
+            Turma turmaSelecionada = _context.Turmas.Where(a => a.TurmaId == id).FirstOrDefault();
+            ViewData["TurmaSelecionada"] = turmaSelecionada.TurmaNome;
+            ViewData["TurmaId"] = id;
+            List<AlunoTurma> alunosDaTurma = _context.AlunosTurma.Where(at => at.TurmaId == id).ToList();
+            List<Aluno> alunosMatriculados = new List<Aluno>();
+            foreach (var aluno in alunosDaTurma)
+            {
+                alunosMatriculados.Add(_context.Alunos.Where(a => a.AlunoId == aluno.AlunoId).FirstOrDefault());
+            }
+            ViewData["AlunosDaTurma"] = alunosMatriculados;
+            List<Aluno> alunosDisponiveis = new List<Aluno>();
+            foreach (var aluno in alunos)
+            {
+                if (!alunosMatriculados.Any(a => a.AlunoId == aluno.AlunoId))
+                {
+                    alunosDisponiveis.Add(aluno);
+                }
+            }
+            ViewData["Alunos"] = alunosDisponiveis;
+            return View("ListaAlunos", alunoTurmas);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdicionaAlunoTurma(string idAluno, string idTurma)
+        {
+            if (idTurma == null)
+            {
+                ViewData["Erro"] = "Selecione uma turma para adicionar Alunos";
+                List<Aluno> alunos = _context.Alunos.Where(a => a.CadAtivo == true).ToList();
+                List<Turma> turmas = _context.Turmas.Where(a => a.CadAtivo == true).ToList();
+                List<AlunoTurma> alunoTurmas = _context.AlunosTurma.ToList();
+                ViewData["Alunos"] = alunos.ToList();
+                ViewData["Turmas"] = turmas.ToList();
+                return View("ListaAlunos", alunoTurmas);
+            }
+            AlunoTurma alunoTurma = new AlunoTurma();
+            alunoTurma.AlunoTurmaId = Guid.NewGuid();
+            alunoTurma.AlunoId = Guid.Parse(idAluno);
+            alunoTurma.TurmaId = Guid.Parse(idTurma);
+            _context.Add(alunoTurma);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("SelecionaTurma", new { id = idTurma });
+        }
+
+        public async Task<IActionResult> RemoveAlunoTurma(string idAluno, string idTurma)
+        {
+            if (idTurma == null)
+            {
+                ViewData["Erro"] = "Selecione uma turma para Remover Alunos";
+                List<Aluno> alunos = _context.Alunos.Where(a => a.CadAtivo == true).ToList();
+                List<Turma> turmas = _context.Turmas.Where(a => a.CadAtivo == true).ToList();
+                List<AlunoTurma> alunoTurmas = _context.AlunosTurma.ToList();
+                ViewData["Alunos"] = alunos.ToList();
+                ViewData["Turmas"] = turmas.ToList();
+                return View("ListaAlunos", alunoTurmas);
+            }
+            AlunoTurma alunoTurma = _context.AlunosTurma.Where(a => a.AlunoId == Guid.Parse(idAluno)).Where(a => a.TurmaId == Guid.Parse(idTurma)).FirstOrDefault();
+            _context.Remove(alunoTurma);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("SelecionaTurma", new { id = idTurma });
+        }
+
+        public async Task<IActionResult> FiltarTurmas(string filtro)
+        {
+            if (filtro == null)
+            {
+                return RedirectToAction("ListaAlunos");
+            }
+            List<Turma> turmas = _context.Turmas.Where(a => a.CadAtivo == true).ToList();
+            turmas = turmas.Where(a => a.TurmaNome.ToUpper().Contains(filtro.ToUpper())).ToList();
+            ViewData["Turmas"] = turmas;
+            List<Aluno> alunos = _context.Alunos.Where(a => a.CadAtivo == true).ToList();
+            List<AlunoTurma> alunoTurmas = _context.AlunosTurma.ToList();
+            ViewData["Alunos"] = alunos.ToList();
+            ViewData["Turmas"] = turmas.ToList();
+            return View("ListaAlunos", _context.AlunosTurma.ToList());
+        }
     }
+
 }

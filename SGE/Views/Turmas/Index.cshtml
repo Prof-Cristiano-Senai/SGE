@@ -27,6 +27,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.CadInativo)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TurmaEncerrada)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,6 +56,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CadInativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFim)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TurmaEncerrada)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TurmaId">Edit</a> |

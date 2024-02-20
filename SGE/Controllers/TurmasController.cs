@@ -36,7 +36,6 @@ namespace SGE.Controllers
                     return RedirectToAction("AcessoNegado", "Home");
                 }
             }
-
             return View(await _context.Turmas.ToListAsync());
         }
 
@@ -90,7 +89,6 @@ namespace SGE.Controllers
                     return RedirectToAction("AcessoNegado", "Home");
                 }
             }
-
             return View();
         }
 
@@ -99,7 +97,7 @@ namespace SGE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TurmaId,TurmaNome,Turno,Serie,CadAtivo,CadInativo")] Turma turma)
+        public async Task<IActionResult> Create([Bind("TurmaId,TurmaNome,Turno,Serie,CadAtivo,CadInativo,DataInicio,DataFim,TurmaEncerrada")] Turma turma)
         {
             if (turma.CadAtivo == false)
             {
@@ -109,7 +107,6 @@ namespace SGE.Controllers
             {
                 turma.CadInativo = null;
             }
-
             if (ModelState.IsValid)
             {
                 turma.TurmaId = Guid.NewGuid();
@@ -137,7 +134,6 @@ namespace SGE.Controllers
                     return RedirectToAction("AcessoNegado", "Home");
                 }
             }
-
             if (id == null)
             {
                 return NotFound();
@@ -156,7 +152,7 @@ namespace SGE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("TurmaId,TurmaNome,Turno,Serie,CadAtivo,CadInativo")] Turma turma)
+        public async Task<IActionResult> Edit(Guid id, [Bind("TurmaId,TurmaNome,Turno,Serie,CadAtivo,CadInativo,DataInicio,DataFim,TurmaEncerrada")] Turma turma)
         {
             if (id != turma.TurmaId)
             {
@@ -171,7 +167,6 @@ namespace SGE.Controllers
             {
                 turma.CadInativo = null;
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -198,21 +193,6 @@ namespace SGE.Controllers
         // GET: Turmas/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (HttpContext.Session.GetString("email") == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            else
-            {
-                string Email = HttpContext.Session.GetString("email");
-                var usuario = _context.Usuarios.Where(a => a.Email == Email).FirstOrDefault();
-                Guid idTipoAluno = _context.TiposUsuario.Where(a => a.Tipo == "Aluno").FirstOrDefault().TipoUsuarioId;
-                if (usuario.TipoUsuarioId == idTipoAluno)
-                {
-                    return RedirectToAction("AcessoNegado", "Home");
-                }
-            }
-
             if (id == null)
             {
                 return NotFound();

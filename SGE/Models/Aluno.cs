@@ -23,5 +23,6 @@ namespace SGE.Models
         public Guid TipoUsuarioId { get; set; }
         public TipoUsuario? TipoUsuario { get; set; }
         public string? UrlFoto { get; set; }
+        public ICollection<AlunoTurma>? AlunoTurmas { get; set; }
     }
 }
