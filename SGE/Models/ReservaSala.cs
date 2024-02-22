@@ -13,5 +13,6 @@
         public TimeOnly HoraFim { get; set; }
         public bool CadAtivo { get; set; }
         public DateTime? CadInativo { get; set; }
+        public string? CorReserva { get; set; }
     }
 }
