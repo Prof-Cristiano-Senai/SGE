@@ -365,7 +365,6 @@ namespace SGE.Controllers
                 {
                     Ocorrencia.CadInativo = null;
                 }
-
                 if (Ocorrencia.Finalizado == true)
                 {
                     Ocorrencia.DataFinalizado = DateTime.Now;
