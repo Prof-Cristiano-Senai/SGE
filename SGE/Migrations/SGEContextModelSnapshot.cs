@@ -114,10 +114,13 @@ namespace SGE.Migrations
                     b.ToTable("AlunoTurma", (string)null);
                 });
 
-            modelBuilder.Entity("SGE.Models.Ocorrenia", b =>
+            modelBuilder.Entity("SGE.Models.Ocorrencia", b =>
                 {
-                    b.Property<Guid>("OcorreniaId")
+                    b.Property<Guid>("OcorrenciaId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AlunoId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("CadAtivo")
@@ -142,16 +145,21 @@ namespace SGE.Migrations
                     b.Property<Guid>("TipoOcorrenciaId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Tratativa")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("OcorreniaId");
+                    b.HasKey("OcorrenciaId");
+
+                    b.HasIndex("AlunoId");
 
                     b.HasIndex("TipoOcorrenciaId");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Ocorrenia", (string)null);
+                    b.ToTable("Ocorrencia", (string)null);
                 });
 
             modelBuilder.Entity("SGE.Models.ReservaSala", b =>
@@ -362,8 +370,14 @@ namespace SGE.Migrations
                     b.Navigation("Turma");
                 });
 
-            modelBuilder.Entity("SGE.Models.Ocorrenia", b =>
+            modelBuilder.Entity("SGE.Models.Ocorrencia", b =>
                 {
+                    b.HasOne("SGE.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SGE.Models.TipoOcorrencia", "TipoOcorrencia")
                         .WithMany()
                         .HasForeignKey("TipoOcorrenciaId")
@@ -375,6 +389,8 @@ namespace SGE.Migrations
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Aluno");
 
                     b.Navigation("TipoOcorrencia");
 

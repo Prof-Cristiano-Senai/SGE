@@ -25,10 +25,10 @@ namespace SGE.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ocorrenia",
+                name: "Ocorrencia",
                 columns: table => new
                 {
-                    OcorreniaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OcorrenciaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TipoOcorrenciaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UsuarioId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DataOcorrencia = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -40,15 +40,15 @@ namespace SGE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ocorrenia", x => x.OcorreniaId);
+                    table.PrimaryKey("PK_Ocorrencia", x => x.OcorrenciaId);
                     table.ForeignKey(
-                        name: "FK_Ocorrenia_TipoOcorrencia_TipoOcorrenciaId",
+                        name: "FK_Ocorrencia_TipoOcorrencia_TipoOcorrenciaId",
                         column: x => x.TipoOcorrenciaId,
                         principalTable: "TipoOcorrencia",
                         principalColumn: "TipoOcorrenciaId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ocorrenia_Usuario_UsuarioId",
+                        name: "FK_Ocorrencia_Usuario_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "Usuario",
                         principalColumn: "UsuarioId",
@@ -56,13 +56,13 @@ namespace SGE.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ocorrenia_TipoOcorrenciaId",
-                table: "Ocorrenia",
+                name: "IX_Ocorrencia_TipoOcorrenciaId",
+                table: "Ocorrencia",
                 column: "TipoOcorrenciaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ocorrenia_UsuarioId",
-                table: "Ocorrenia",
+                name: "IX_Ocorrencia_UsuarioId",
+                table: "Ocorrencia",
                 column: "UsuarioId");
         }
 
@@ -70,7 +70,7 @@ namespace SGE.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Ocorrenia");
+                name: "Ocorrencia");
 
             migrationBuilder.DropTable(
                 name: "TipoOcorrencia");

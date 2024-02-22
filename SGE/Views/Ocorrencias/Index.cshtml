@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SGE.Models.Ocorrenia>
+﻿@model IEnumerable<SGE.Models.Ocorrencia>
 
 @{
     ViewData["Title"] = "Index";
@@ -67,9 +67,9 @@
                 @Html.DisplayFor(modelItem => item.DataFinalizado)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.OcorreniaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.OcorreniaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.OcorreniaId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.OcorrenciaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OcorrenciaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OcorrenciaId">Delete</a>
             </td>
         </tr>
 }

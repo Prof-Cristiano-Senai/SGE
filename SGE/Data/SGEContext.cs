@@ -14,7 +14,7 @@ namespace SGE.Data
         public DbSet<Turma> Turmas { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<TipoUsuario> TiposUsuario { get; set; }
-        public DbSet<Ocorrenia> Ocorrencias { get; set; }
+        public DbSet<Ocorrencia> Ocorrencias { get; set; }
         public DbSet<TipoOcorrencia> TiposOcorrencia { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace SGE.Data
             modelBuilder.Entity<Turma>().ToTable("Turma");
             modelBuilder.Entity<Usuario>().ToTable("Usuario");
             modelBuilder.Entity<TipoUsuario>().ToTable("TipoUsuario");
-            modelBuilder.Entity<Ocorrenia>().ToTable("Ocorrenia");
+            modelBuilder.Entity<Ocorrencia>().ToTable("Ocorrencia");
             modelBuilder.Entity<TipoOcorrencia>().ToTable("TipoOcorrencia");
         }
     }

@@ -118,9 +118,9 @@ namespace SGE.Migrations
                     b.ToTable("AlunoTurma", (string)null);
                 });
 
-            modelBuilder.Entity("SGE.Models.Ocorrenia", b =>
+            modelBuilder.Entity("SGE.Models.Ocorrencia", b =>
                 {
-                    b.Property<Guid>("OcorreniaId")
+                    b.Property<Guid>("OcorrenciaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -149,13 +149,13 @@ namespace SGE.Migrations
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("OcorreniaId");
+                    b.HasKey("OcorrenciaId");
 
                     b.HasIndex("TipoOcorrenciaId");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Ocorrenia", (string)null);
+                    b.ToTable("Ocorrencia", (string)null);
                 });
 
             modelBuilder.Entity("SGE.Models.ReservaSala", b =>
@@ -351,7 +351,7 @@ namespace SGE.Migrations
                     b.Navigation("Turma");
                 });
 
-            modelBuilder.Entity("SGE.Models.Ocorrenia", b =>
+            modelBuilder.Entity("SGE.Models.Ocorrencia", b =>
                 {
                     b.HasOne("SGE.Models.TipoOcorrencia", "TipoOcorrencia")
                         .WithMany()
